@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inpaintly — Paint over any photo. AI transforms just that part.</title>
+  <meta name="description" content="Upload a photo, brush what you want changed, pick a weekly theme. AI rebuilds just that region. 3 free generations, no card needed." />
+  <meta name="theme-color" content="#A855F7" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎨%3C/text%3E%3C/svg%3E" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="Inpaintly — Paint over any photo. AI transforms just that part." />
+  <meta property="og:description" content="Upload a photo, brush what you want changed, pick a weekly theme. AI rebuilds just that region." />
+  <meta property="og:image" content="https://inpaintly.app/images/after.png" />
+  <meta property="og:url" content="https://inpaintly.app" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Tailwind + Inter -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+          colors: {
+            brand: {
+              50:  '#FAF5FF',
+              100: '#F3E8FF',
+              500: '#A855F7',
+              600: '#9333EA',
+              700: '#7E22CE',
+              900: '#581C87',
+            },
+            coral: { 500: '#EC4899' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .gradient-text {
+      background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+    }
+    .grid-pattern {
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(168,85,247,0.15) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .chev { transform: rotate(180deg); }
+    .chev { transition: transform .2s ease; }
+  </style>
+</head>
+
+<body class="font-sans text-slate-900 bg-white antialiased">
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 font-extrabold text-xl">
+        <span class="text-2xl">🎨</span>
+        <span class="gradient-text">Inpaintly</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <a href="#how" class="hover:text-slate-900">How it works</a>
+        <a href="#themes" class="hover:text-slate-900">Themes</a>
+        <a href="#pricing" class="hover:text-slate-900">Pricing</a>
+        <a href="#faq" class="hover:text-slate-900">FAQ</a>
+      </div>
+      <a href="#waitlist" class="gradient-bg text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg shadow-brand-500/25 hover:shadow-xl transition">Get early access</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden grid-pattern">
+    <div class="max-w-6xl mx-auto px-6 pt-16 pb-24 md:pt-24 md:pb-32 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-brand-100 text-brand-700 px-3 py-1 rounded-full text-xs font-semibold mb-6">
+          <span class="w-2 h-2 bg-brand-500 rounded-full animate-pulse"></span>
+          Launching April 2026 · Join the waitlist
+        </div>
+        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
+          Paint over it.<br/>
+          <span class="gradient-text">Transform it.</span>
+        </h1>
+        <p class="mt-6 text-lg text-slate-600 max-w-xl leading-relaxed">
+          Upload any photo. Brush the part you want changed. Pick this week's theme or type your own prompt. Our AI rebuilds just that region — your face, pose, and everything else stay exactly the same.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <a href="#waitlist" class="gradient-bg text-white px-7 py-4 rounded-full font-semibold shadow-lg shadow-brand-500/25 text-center">Get 3 free generations at launch</a>
+          <a href="#how" class="border-2 border-slate-200 hover:border-slate-400 text-slate-700 px-7 py-4 rounded-full font-semibold text-center">See how it works</a>
+        </div>
+        <p class="mt-4 text-sm text-slate-500">No card needed. Credits never expire.</p>
+      </div>
+
+      <!-- Visual: before / brush / after -->
+      <div class="relative">
+        <div class="grid grid-cols-3 gap-3">
+          <figure class="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-slate-200">
+            <img src="images/before.png" alt="Original photo" class="w-full aspect-[3/4] object-cover" loading="lazy" />
+            <figcaption class="absolute bottom-2 left-2 bg-white/90 text-xs font-semibold px-2 py-1 rounded">Before</figcaption>
+          </figure>
+          <figure class="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-slate-200">
+            <img src="images/mask.png" alt="Mask applied" class="w-full aspect-[3/4] object-cover" loading="lazy" />
+            <figcaption class="absolute bottom-2 left-2 bg-white/90 text-xs font-semibold px-2 py-1 rounded">Brush</figcaption>
+          </figure>
+          <figure class="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-slate-200 ring-2 ring-brand-500">
+            <img src="images/after.png" alt="AI transformed result" class="w-full aspect-[3/4] object-cover" loading="lazy" />
+            <figcaption class="absolute bottom-2 left-2 gradient-bg text-white text-xs font-semibold px-2 py-1 rounded">After</figcaption>
+          </figure>
+        </div>
+        <p class="text-center text-xs text-slate-400 mt-3">Real output from our AI. Not a mockup.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="py-24 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">Three taps. New photo.</h2>
+        <p class="mt-4 text-lg text-slate-600">No prompt engineering. No Photoshop. No learning curve.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-2xl p-8 ring-1 ring-slate-100 shadow-sm">
+          <div class="w-12 h-12 rounded-xl gradient-bg text-white font-extrabold text-xl flex items-center justify-center mb-5">1</div>
+          <h3 class="text-xl font-bold mb-2">Upload</h3>
+          <p class="text-slate-600">Drop any photo from your camera roll. Selfie, couple pic, full body — whatever you've got.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 ring-1 ring-slate-100 shadow-sm">
+          <div class="w-12 h-12 rounded-xl gradient-bg text-white font-extrabold text-xl flex items-center justify-center mb-5">2</div>
+          <h3 class="text-xl font-bold mb-2">Brush</h3>
+          <p class="text-slate-600">Paint over anything you want changed — outfit, background, jewelry, hair. It's literally just a brush.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 ring-1 ring-slate-100 shadow-sm">
+          <div class="w-12 h-12 rounded-xl gradient-bg text-white font-extrabold text-xl flex items-center justify-center mb-5">3</div>
+          <h3 class="text-xl font-bold mb-2">Transform</h3>
+          <p class="text-slate-600">Pick this week's theme or write your own prompt. Our AI rebuilds just the part you painted.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEEKLY THEMES -->
+  <section id="themes" class="py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold tracking-widest text-brand-600 uppercase">The retention hook</p>
+        <h2 class="mt-2 text-4xl md:text-5xl font-extrabold tracking-tight">Every Monday, a new drop.</h2>
+        <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Forget writing clever prompts. We cook up a weekly theme pack. One tap, new vibe.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-fuchsia-400 to-pink-500 flex items-end p-4">
+          <div class="text-white">
+            <p class="text-xs font-semibold tracking-widest opacity-80">WEEK 1</p>
+            <p class="font-extrabold text-lg leading-tight">Girls Night Out</p>
+          </div>
+          <span class="absolute top-3 right-3 bg-white/95 text-brand-700 text-[10px] font-bold px-2 py-0.5 rounded-full">LIVE</span>
+        </div>
+        <div class="relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-rose-500 to-amber-500 flex items-end p-4">
+          <div class="text-white">
+            <p class="text-xs font-semibold tracking-widest opacity-80">WEEK 2</p>
+            <p class="font-extrabold text-lg leading-tight">Bollywood Glam</p>
+          </div>
+        </div>
+        <div class="relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-slate-700 to-slate-900 flex items-end p-4">
+          <div class="text-white">
+            <p class="text-xs font-semibold tracking-widest opacity-80">WEEK 3</p>
+            <p class="font-extrabold text-lg leading-tight">CEO Headshot</p>
+          </div>
+        </div>
+        <div class="relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-amber-400 to-orange-500 flex items-end p-4">
+          <div class="text-white">
+            <p class="text-xs font-semibold tracking-widest opacity-80">WEEK 4</p>
+            <p class="font-extrabold text-lg leading-tight">Beach Sunset</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-24 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">No subscription. No expiry.</h2>
+        <p class="mt-4 text-lg text-slate-600">Just credits. Pay once, use whenever.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        <!-- Starter -->
+        <div class="bg-white rounded-2xl p-8 ring-1 ring-slate-200 shadow-sm">
+          <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Starter</p>
+          <p class="mt-4 flex items-baseline">
+            <span class="text-5xl font-extrabold">$4.99</span>
+          </p>
+          <p class="text-sm text-slate-500 mt-1">10 credits · $0.50 per generation</p>
+          <ul class="mt-6 space-y-3 text-sm text-slate-700">
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> 10 AI generations</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Access to all weekly themes</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> HD downloads</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Credits never expire</li>
+          </ul>
+        </div>
+        <!-- Popular -->
+        <div class="bg-white rounded-2xl p-8 ring-2 ring-brand-500 shadow-xl shadow-brand-500/10 relative">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 gradient-bg text-white text-xs font-bold px-3 py-1 rounded-full tracking-wider">MOST POPULAR</span>
+          <p class="text-sm font-semibold text-brand-600 uppercase tracking-wider">Popular</p>
+          <p class="mt-4 flex items-baseline">
+            <span class="text-5xl font-extrabold gradient-text">$14.99</span>
+          </p>
+          <p class="text-sm text-slate-500 mt-1">35 credits · $0.43 per generation</p>
+          <ul class="mt-6 space-y-3 text-sm text-slate-700">
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> 35 AI generations</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Access to all weekly themes</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> HD downloads</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Credits never expire</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Priority queue</li>
+          </ul>
+        </div>
+        <!-- Pro -->
+        <div class="bg-white rounded-2xl p-8 ring-1 ring-slate-200 shadow-sm">
+          <p class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Pro</p>
+          <p class="mt-4 flex items-baseline">
+            <span class="text-5xl font-extrabold">$29.99</span>
+          </p>
+          <p class="text-sm text-slate-500 mt-1">80 credits · $0.37 per generation</p>
+          <ul class="mt-6 space-y-3 text-sm text-slate-700">
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> 80 AI generations</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Access to all weekly themes</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> HD downloads</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Credits never expire</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Priority queue</li>
+            <li class="flex gap-2"><span class="text-brand-500">✓</span> Early access to new themes</li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-center text-sm text-slate-500 mt-8">
+        First 3 generations free when you sign up. No card required. All prices in USD.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center mb-14">Questions</h2>
+      <div class="space-y-3">
+        <details class="bg-slate-50 rounded-xl p-5 group">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>Is it actually my face in the photo?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">Yes. We only change the area you brush over. Your face, pose, and everything you didn't paint stays pixel-identical.</p>
+        </details>
+        <details class="bg-slate-50 rounded-xl p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>How long does a generation take?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">Usually 10–20 seconds from tapping Generate to your result.</p>
+        </details>
+        <details class="bg-slate-50 rounded-xl p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>Can I use it on photos of other people?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">Yes, as long as you have their permission. We take reports seriously — any non-consensual use is banned and accounts are terminated.</p>
+        </details>
+        <details class="bg-slate-50 rounded-xl p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>What can't I do?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">No nudity, no content that sexualises or depicts minors, no deepfakes of real public figures, no weapons or violence. Our safety filters and human review keep it clean.</p>
+        </details>
+        <details class="bg-slate-50 rounded-xl p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>Is there an app I can download?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">We're a progressive web app — on mobile, tap the menu icon in your browser and hit "Add to Home Screen." It looks and feels native, no App Store needed.</p>
+        </details>
+        <details class="bg-slate-50 rounded-xl p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>Do credits expire?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">Never. Buy once, use whenever.</p>
+        </details>
+        <details class="bg-slate-50 rounded-xl p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>Can I get a refund?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">Unused credits are refundable within 7 days of purchase — <a href="/refunds.html" class="text-brand-600 hover:underline">full refund policy here</a>. If you're unhappy with a specific result, tap Regenerate and we retry on us.</p>
+        </details>
+        <details class="bg-slate-50 rounded-xl p-5">
+          <summary class="flex justify-between items-center font-semibold">
+            <span>Do you train AI on my photos?</span>
+            <span class="chev">▾</span>
+          </summary>
+          <p class="mt-3 text-slate-600">No. We never train models on your uploads. Your photos are stored only long enough to produce your result and are automatically deleted — see our <a href="/privacy.html" class="text-brand-600 hover:underline">Privacy Policy</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST -->
+  <section id="waitlist" class="py-24 gradient-bg">
+    <div class="max-w-2xl mx-auto px-6 text-center text-white">
+      <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">Be first through the door.</h2>
+      <p class="mt-4 text-lg text-white/90">Join the waitlist and get 5 bonus credits on launch day (instead of 3). Takes 10 seconds.</p>
+      <form action="https://formsubmit.co/ascendglobaldata@gmail.com" method="POST" class="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <input type="hidden" name="_subject" value="New Inpaintly waitlist signup" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://inpaintly.app/?subscribed=1" />
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="you@email.com"
+          class="flex-1 px-5 py-4 rounded-full text-slate-900 focus:outline-none focus:ring-4 focus:ring-white/30"
+        />
+        <button type="submit" class="bg-white text-brand-700 px-7 py-4 rounded-full font-semibold hover:bg-brand-50 transition">
+          Get early access
+        </button>
+      </form>
+      <p class="mt-4 text-sm text-white/70">One email for launch. Unsubscribe anytime.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 border-t border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-sm">
+      <div>
+        <div class="flex items-center gap-2 font-extrabold text-xl">
+          <span>🎨</span>
+          <span class="gradient-text">Inpaintly</span>
+        </div>
+        <p class="mt-3 text-slate-500 max-w-xs">AI-powered inpainting for everyone. Paint what you want changed; we handle the rest.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-900 mb-3">Product</p>
+        <ul class="space-y-2 text-slate-600">
+          <li><a href="#how" class="hover:text-slate-900">How it works</a></li>
+          <li><a href="#themes" class="hover:text-slate-900">Weekly themes</a></li>
+          <li><a href="#pricing" class="hover:text-slate-900">Pricing</a></li>
+          <li><a href="#faq" class="hover:text-slate-900">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-900 mb-3">Company &amp; Legal</p>
+        <ul class="space-y-2 text-slate-600">
+          <li><a href="mailto:hello@inpaintly.app" class="hover:text-slate-900">hello@inpaintly.app</a></li>
+          <li><a href="/terms.html" class="hover:text-slate-900">Terms of Service</a></li>
+          <li><a href="/privacy.html" class="hover:text-slate-900">Privacy Policy</a></li>
+          <li><a href="/refunds.html" class="hover:text-slate-900">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-6 mt-10 pt-6 border-t border-slate-100 text-sm text-slate-500 flex flex-col md:flex-row justify-between gap-2">
+      <p>© 2026 Inpaintly. Made with paint and pixels.</p>
+      <p>Operated by Ascend Global Data · hello@inpaintly.app</p>
+    </div>
+  </footer>
+
+  <script>
+    // Show success banner after email submission
+    if (new URLSearchParams(window.location.search).get('subscribed') === '1') {
+      const banner = document.createElement('div');
+      banner.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-lg z-50';
+      banner.textContent = "You're on the list. We'll email you when we launch.";
+      document.body.appendChild(banner);
+      setTimeout(() => banner.remove(), 5000);
+    }
+  </script>
+</body>
+</html>
